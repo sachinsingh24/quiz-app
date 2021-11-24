@@ -1,25 +1,52 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import Data from './Data';
+import Questions from './components/Questions';
 
-function App() {
+const App = () => {
+  const [index, setIndex] = useState(0);
+  const { questionText, answerOptions } = Data[index];
+  const [score, setScore] = useState(0);
+  const [show, setShow] = useState(false);
+  const nextQuestion = index + 1;
+  const Option = (answer) => {
+    if (answer === true) {
+      setScore(score + 1);
+    }
+    if (nextQuestion < Data.length) {
+      setIndex(nextQuestion);
+    } else {
+      setShow(true);
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <main>
+      <section className='menu section'>
+        <div className='title'>
+          <h2>Quiz App</h2>
+          <div className='underline'></div>
+        </div>
+        <h2>
+          Question {nextQuestion}
+          <small>{Data.length}</small>
+        </h2>
+        <>
+          {show ? (
+            <div className='section-center'>
+              <h3 className='score'>
+                You have scored {score} out of {Data.length}
+              </h3>
+            </div>
+          ) : (
+            <div className='section-center'>
+              <h2 className='.Questions'>{questionText}</h2>
+              <Questions answerOptions={answerOptions} Option={Option} />
+            </div>
+          )}
+        </>
+      </section>
+    </main>
   );
-}
+};
 
 export default App;
